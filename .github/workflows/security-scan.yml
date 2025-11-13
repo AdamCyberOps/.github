@@ -28,4 +28,8 @@ jobs:
       - name: Run Dependabot (Dependency Review)
         uses: actions/dependency-review-action@v4
         with:
-          fail-on-severity: high
+          - uses: actions/dependency-review-action@v4
+  with:
+    base_ref: main
+    head_ref: ${{ github.ref_name }}
+
