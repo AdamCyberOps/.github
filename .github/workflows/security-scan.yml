@@ -1,0 +1,29 @@
+name: Org Security Scan
+
+on:
+  workflow_call:
+    inputs:
+      run_branch:
+        required: false
+        type: string
+
+jobs:
+  sast-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run SAST Scan
+        run: echo "This is a placeholder for SAST/Secret scans"
+
+  sca-dependabot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Dependabot (Dependency Review)
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
