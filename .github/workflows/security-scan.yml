@@ -6,9 +6,6 @@ on:
       run_branch:
         required: false
         type: string
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
 jobs:
   sast-scan:
@@ -16,8 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        # automatically uses system GITHUB_TOKEN, no need to pass it
 
       - name: Run SAST Scan
         run: echo "This is a placeholder for SAST/Secret scans"
@@ -27,8 +23,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        # automatically uses system GITHUB_TOKEN
 
       - name: Run Dependabot (Dependency Review)
         uses: actions/dependency-review-action@v4
