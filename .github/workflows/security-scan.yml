@@ -6,6 +6,12 @@ on:
       run_branch:
         required: false
         type: string
+      base_ref:
+        required: false
+        type: string
+      head_ref:
+        required: false
+        type: string
 
 jobs:
   sast-scan:
@@ -13,23 +19,33 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # automatically uses system GITHUB_TOKEN, no need to pass it
 
       - name: Run SAST Scan
-        run: echo "This is a placeholder for SAST/Secret scans"
+        run: |
+          echo "Placeholder for SAST scan"
+          # Example: bandit -r .
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Gitleaks Secret Scan
+        run: |
+          curl -sSL https://github.com/zricethezav/gitleaks/releases/latest/download/gitleaks-linux-amd64 -o gitleaks
+          chmod +x gitleaks
+          ./gitleaks detect -s .
 
   sca-dependabot:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # automatically uses system GITHUB_TOKEN
 
       - name: Run Dependabot (Dependency Review)
         uses: actions/dependency-review-action@v4
         with:
-          - uses: actions/dependency-review-action@v4
-  with:
-    base_ref: main
-    head_ref: ${{ github.ref_name }}
-
+          fail-on-severity: high
+          base_ref: ${{ inputs.base_ref || 'main' }}
+          head_ref: ${{ inputs.head_ref || github.ref_name }}
